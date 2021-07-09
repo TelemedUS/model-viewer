@@ -1,0 +1,63 @@
+commit 252944ea92125e1d35a653ac45b1c15b0f20c7b1
+Author: Tim R <tirichards@google.com>
+Date:   Fri Jul 9 12:29:35 2021 -0700
+
+    Adds empty images if the loaded glTF does not implement them. (#2505)
+    
+    * Adds empty images if the loaded glTF does not implement them.
+    For instance TexturedBox has no normal map, the code would create an 'empty normal map' this would allow the texture to be added at runtime.
+    
+    Caveat - an empty material.aoMap causes objects to be rendered black. Next commit will add a 'texture setter' that will update the texture material but leave it null otherwise, this should avoid the rendering issues in three.
+    
+    * * Adds createTexture() to scene-graph API
+    * Adds setTexture() to TextureInfo API.
+    
+    WIP requires some contortions pulling the all the data pieces together, does inform a simpler design in the future for scene-graph related things where the data is more centralized internally and easier to change while access is more decentralized to match the gltf spec.
+    
+    * Replace gltf defintion objects with {} objects
+    Added solution pbr-metallic-roughness
+    
+    * Fixes issues with texture state, default settings are incorrect for glTF textures.
+    Added TextureApplicator helper class to handle repeated setup code while allowing for various texture settings.
+    
+    * Added glTF texture default settings to createTexture.
+    Using a long lived texture loader.
+    
+    * Update 'Swap Textures 2' to create a texture.
+    Adds a new example to show adding a new texture to a model, ie adds a normal map to Duck, even though Duck doesn't have normal map to begin with.
+    
+    * Added TextureContext as a stop-gap to begin simplifying how data is held and accessed between texture related objects; leaves the current infrastructure in place but provides easier access to the data going forward.
+    Refactored TextureApplicator between TextureContext and TextureInfo.
+    Updated the Create Texture sample to add and remove a texture.
+    
+    * Comment fixes
+    
+    * Refactors the creation of texture related objects to simplify construction, reduce maintenance, increase readability, and provide a new way of containing data that is more conducive to modifying state such as changing a texture or texture/sampler property
+    
+    * deleted old code
+    
+    * Comment updates
+    
+    * removed unused code
+    
+    * change wasn't saved
+    
+    * stubs out texture-spec for testing
+    
+    * * Added texture-spec and tests
+    * Keeping correlated objects up to date
+    
+    * remove .only from suite
+    
+    * remove unused texture
+    
+    * * Update to tests
+    * Added helper init() method for common setup code()
+    * Added scene-graph/material-spec.ts to create tests for each type of texture slot.
+    
+    * removed .only
+    
+    * * Folded TextureContext into TextureInfo
+    * Updated tests to use setup() and teardown()
+    
+    * removed timePasses()
